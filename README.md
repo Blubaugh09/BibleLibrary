@@ -1,46 +1,84 @@
-# Getting Started with Create React App
+# Bible Library
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React application for storing and retrieving various types of spiritual content with AI integration, Firebase storage, and Bible verse references.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- User authentication with Firebase
+- AI chat with conversation history
+- Bible verse integration using ESV API
+- Audio conversion with OpenAI Whisper
+- Multiple entry types (chat, links, video, text, etc.)
+- Responsive design with Tailwind CSS
 
-### `npm start`
+## Environment Setup
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The application uses the following environment variables in the `.env` file:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```
+REACT_APP_FIREBASE_API_KEY=your_firebase_api_key
+REACT_APP_FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain
+REACT_APP_FIREBASE_PROJECT_ID=your_firebase_project_id
+REACT_APP_FIREBASE_STORAGE_BUCKET=your_firebase_storage_bucket
+REACT_APP_FIREBASE_MESSAGING_SENDER_ID=your_firebase_messaging_sender_id
+REACT_APP_FIREBASE_APP_ID=your_firebase_app_id
+REACT_APP_FIREBASE_MEASUREMENT_ID=your_firebase_measurement_id
 
-### `npm test`
+# OpenAI API Key
+REACT_APP_OPENAI_API_KEY=your_openai_api_key
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+# ESV Bible API Key
+REACT_APP_ESV_API_KEY=your_esv_api_key
+```
 
-### `npm run build`
+## Installation
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. Clone the repository:
+```
+git clone <repository-url>
+cd bible-library
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. Install dependencies:
+```
+npm install
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3. Create a `.env` file in the root directory with your API keys.
 
-### `npm run eject`
+4. Start the development server:
+```
+npm start
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Usage
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. Register or log in with your account
+2. Create a new chat by clicking the "New Chat" button
+3. Ask questions and receive responses with Bible verses
+4. Your conversations will be automatically saved and converted to audio
+5. Browse your saved entries in the library
+6. Click on an entry to continue the conversation
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Technologies Used
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- React with TypeScript
+- Firebase (Authentication, Firestore, Storage)
+- OpenAI GPT-3.5 Turbo and Whisper
+- ESV Bible API
+- Tailwind CSS
+- React Router
 
-## Learn More
+## Future Implementations
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+The application includes blank components for additional entry types that can be implemented in the future:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Link
+- Video
+- Text
+- Audio
+- Song
+- Poem
+- Quote
+- Twitter
+- YouTube
