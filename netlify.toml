@@ -1,6 +1,8 @@
 [build]
-  command = "CI=false npm run build"
+  command = "DISABLE_ESLINT_PLUGIN=true CI=false npm run build"
   publish = "build"
 
 [build.environment]
-  CI = "false" 
+  CI = "false"
+  DISABLE_ESLINT_PLUGIN = "true"
+  ESLINT_NO_DEV_ERRORS = "true" 

@@ -1528,8 +1528,8 @@ const PathwayDetailPage: React.FC = () => {
                       </div>
 
                       {/* Instructions for adding points */}
-                      <div className="text-center mb-4 text-sm text-gray-500 italic">
-                        Click on the + icons to add new points
+                      <div className="text-center mb-6 text-sm text-gray-500 italic">
+                        +
                       </div>
 
                       {/* Pathway points */}
@@ -1552,422 +1552,206 @@ const PathwayDetailPage: React.FC = () => {
                             <div className={`absolute left-1/2 top-6 w-4 h-4 rounded-full z-20 -translate-x-1/2
                               ${isCompleted ? 'bg-green-500' : 'bg-indigo-500'}`}></div>
                             
-                            {/* Horizontal connector line */}
-                            <div className={`absolute top-[30px] h-0.5 bg-indigo-200 z-10 ${
-                              index % 2 !== 0 
-                                ? 'left-[calc(50%+2px)] w-[calc(50%-4rem-2px)]' 
-                                : 'right-[calc(50%+2px)] w-[calc(50%-4rem-2px)]'
-                            }`}></div>
                             
-                            {/* Content box */}
-                            <div className={`flex ${index % 2 !== 0 ? 'justify-end pr-6' : 'justify-start pl-6'} ${
-                              index % 2 !== 0 ? 'ml-auto mr-[4rem]' : 'mr-auto ml-[4rem]'
-                            } w-[calc(50%-4rem)]`}>
-                              <div className={`rounded-lg border border-gray-200 shadow-sm p-4 w-full mt-3 
-                                ${isCompleted ? 'bg-green-50' : 'bg-white'}
-                                ${index % 2 !== 0 ? 'text-right' : 'text-left'}`}
-                              >
-                                <div className="flex justify-between items-start mb-3">
-                                  <h3 className={`text-lg font-semibold text-gray-800 ${index % 2 !== 0 ? 'order-2' : 'order-1'}`}>
-                                    {point.title}
-                                  </h3>
-                                  
-                                  <button
-                                    onClick={() => handleCompletePoint(index)}
-                                    disabled={isCompleted || updatingPointIndex === index}
-                                    className={`px-3 py-1 rounded-md text-sm font-medium ${index % 2 !== 0 ? 'order-1' : 'order-2'} 
-                                      ${isCompleted 
-                                        ? 'bg-green-100 text-green-800 cursor-default' 
-                                        : 'bg-blue-100 text-blue-800 hover:bg-blue-200'}`}
-                                  >
-                                    {updatingPointIndex === index 
-                                      ? 'Saving...' 
-                                      : isCompleted 
-                                        ? 'Completed' 
-                                        : 'Mark Complete'}
-                                  </button>
-                                </div>
-                                
-                                {isCompleted && (
-                                  <div className={`text-sm text-green-600 italic mb-3 ${index % 2 !== 0 ? 'text-right' : 'text-left'}`}>
-                                    Completed on {completionDate}
-                                  </div>
-                                )}
-                                
-                                <div className="flex flex-col">
-                                  <p className="text-gray-700 mb-3">{point.description}</p>
-                                  
-                                  {point.primaryVerse && (
-                                    <div className="bg-indigo-50 p-3 rounded-md mb-3">
-                                      <div className="font-medium text-indigo-700 mb-1">Primary Verse:</div>
-                                      {editingPrimaryVerse === index ? (
-                                        <div className="flex flex-col space-y-2">
-                                          <input
-                                            type="text"
-                                            value={newPrimaryVerseText}
-                                            onChange={(e) => setNewPrimaryVerseText(e.target.value)}
-                                            className="w-full p-2 border border-indigo-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                                            placeholder="Enter Bible verse (e.g. John 3:16)"
-                                          />
-                                          <div className="flex justify-end space-x-2">
-                                            <button
-                                              onClick={cancelEditingPrimaryVerse}
-                                              disabled={isSavingVerses}
-                                              className="px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
-                                            >
-                                              Cancel
-                                            </button>
-                                            <button
-                                              onClick={() => savePrimaryVerseChanges(index)}
-                                              disabled={isSavingVerses}
-                                              className="px-2 py-1 text-xs bg-indigo-600 text-white rounded hover:bg-indigo-700"
-                                            >
-                                              {isSavingVerses ? 'Saving...' : 'Save'}
-                                            </button>
-                                          </div>
-                                        </div>
-                                      ) : (
-                                        <div className="flex justify-between items-center">
-                                          <div 
-                                            onClick={() => handleVerseClick(point.primaryVerse as string)}
-                                            className="cursor-pointer text-indigo-600 hover:text-indigo-800 hover:underline"
-                                          >
-                                            {point.primaryVerse}
-                                          </div>
-                                          <button
-                                            onClick={() => startEditingPrimaryVerse(index, point.primaryVerse || '')}
-                                            className="ml-2 p-1 text-gray-500 hover:text-indigo-600 hover:bg-indigo-100 rounded"
-                                            title="Edit primary verse"
-                                          >
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                            </svg>
-                                          </button>
-                                        </div>
-                                      )}
-                                    </div>
-                                  )}
-                                  
-                                  {!point.primaryVerse && (
-                                    <div className="mb-3">
-                                      {editingPrimaryVerse === index ? (
-                                        <div className="bg-indigo-50 p-3 rounded-md">
-                                          <div className="font-medium text-indigo-700 mb-1">Primary Verse:</div>
-                                          <div className="flex flex-col space-y-2">
-                                            <input
-                                              type="text"
-                                              value={newPrimaryVerseText}
-                                              onChange={(e) => setNewPrimaryVerseText(e.target.value)}
-                                              className="w-full p-2 border border-indigo-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                                              placeholder="Enter Bible verse (e.g. John 3:16)"
-                                            />
-                                            <div className="flex justify-end space-x-2">
-                                              <button
-                                                onClick={cancelEditingPrimaryVerse}
-                                                disabled={isSavingVerses}
-                                                className="px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
-                                              >
-                                                Cancel
-                                              </button>
-                                              <button
-                                                onClick={() => savePrimaryVerseChanges(index)}
-                                                disabled={isSavingVerses}
-                                                className="px-2 py-1 text-xs bg-indigo-600 text-white rounded hover:bg-indigo-700"
-                                              >
-                                                {isSavingVerses ? 'Saving...' : 'Save'}
-                                              </button>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      ) : (
-                                        <button
-                                          onClick={() => startAddingPrimaryVerse(index)}
-                                          className="flex items-center px-3 py-1.5 text-xs text-indigo-600 border border-dashed border-indigo-300 rounded-md hover:bg-indigo-50"
-                                        >
-                                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                          </svg>
-                                          Add Primary Verse
-                                        </button>
-                                      )}
-                                    </div>
-                                  )}
-                                  
-                                  {/* Additional verses section - always show regardless of whether there are verses */}
-                                  <div className="bg-blue-50 p-3 rounded-md mb-3">
-                                    <div className="flex justify-between items-center mb-2">
-                                      <div className="font-medium text-gray-700">Also read:</div>
-                                      <button
-                                        onClick={() => startAddingAdditionalVerse(index)}
-                                        className="p-1 text-blue-600 hover:bg-blue-100 rounded"
-                                        title="Add verse"
-                                      >
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                        </svg>
-                                      </button>
-                                    </div>
-                                    
-                                    {addingAdditionalVerse === index && (
-                                      <div className="mb-2 p-2 bg-white rounded border border-blue-200">
-                                        <input
-                                          type="text"
-                                          value={newAdditionalVerseInput}
-                                          onChange={(e) => setNewAdditionalVerseInput(e.target.value)}
-                                          className="w-full p-1.5 border border-blue-300 rounded mb-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                          placeholder="Enter Bible verse (e.g. Romans 8:28)"
-                                        />
-                                        <div className="flex justify-end space-x-2">
-                                          <button
-                                            onClick={cancelAddingAdditionalVerse}
-                                            disabled={isSavingVerses}
-                                            className="px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
-                                          >
-                                            Cancel
-                                          </button>
-                                          <button
-                                            onClick={saveNewAdditionalVerse}
-                                            disabled={isSavingVerses || !newAdditionalVerseInput.trim()}
-                                            className="px-2 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700"
-                                          >
-                                            {isSavingVerses ? 'Adding...' : 'Add'}
-                                          </button>
-                                        </div>
-                                      </div>
-                                    )}
-                                    
-                                    {(!point.additionalVerses || point.additionalVerses.length === 0) && addingAdditionalVerse !== index && (
-                                      <div className="text-gray-500 italic text-sm">No additional verses.</div>
-                                    )}
-                                    
-                                    {point.additionalVerses && point.additionalVerses.length > 0 && (
-                                      <ul className={`space-y-1 ${index % 2 !== 0 ? 'text-right' : 'text-left'}`}>
-                                        {point.additionalVerses.map((verse: string, idx: number) => (
-                                          <li key={idx} className="flex items-center justify-between">
-                                            {editingAdditionalVerse && 
-                                             editingAdditionalVerse.pointIndex === index && 
-                                             editingAdditionalVerse.verseIndex === idx ? (
-                                              <div className="w-full p-1.5 bg-white rounded border border-blue-200">
-                                                <input
-                                                  type="text"
-                                                  value={newAdditionalVerseText}
-                                                  onChange={(e) => setNewAdditionalVerseText(e.target.value)}
-                                                  className="w-full p-1.5 border border-blue-300 rounded mb-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                                  placeholder="Enter Bible verse (e.g. Romans 8:28)"
-                                                />
-                                                <div className="flex justify-end space-x-2">
-                                                  <button
-                                                    onClick={cancelEditingAdditionalVerse}
-                                                    disabled={isSavingVerses}
-                                                    className="px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
-                                                  >
-                                                    Cancel
-                                                  </button>
-                                                  <button
-                                                    onClick={saveAdditionalVerseChanges}
-                                                    disabled={isSavingVerses}
-                                                    className="px-2 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700"
-                                                  >
-                                                    {isSavingVerses ? 'Saving...' : 'Save'}
-                                                  </button>
-                                                </div>
-                                              </div>
-                                            ) : (
-                                              <>
-                                                <span 
-                                                  onClick={() => handleVerseClick(verse)}
-                                                  className="cursor-pointer text-indigo-600 hover:text-indigo-800 hover:underline"
-                                                >
-                                                  {verse}
-                                                </span>
-                                                <div className="flex space-x-1">
-                                                  <button
-                                                    onClick={() => startEditingAdditionalVerse(index, idx, verse)}
-                                                    className="p-1 text-gray-500 hover:text-blue-600 hover:bg-blue-100 rounded"
-                                                    title="Edit verse"
-                                                  >
-                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                                    </svg>
-                                                  </button>
-                                                  <button
-                                                    onClick={() => deleteAdditionalVerse(index, idx)}
-                                                    className="p-1 text-gray-500 hover:text-red-600 hover:bg-red-100 rounded"
-                                                    title="Remove verse"
-                                                  >
-                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                    </svg>
-                                                  </button>
-                                                </div>
-                                              </>
-                                            )}
-                                          </li>
-                                        ))}
-                                      </ul>
-                                    )}
-                                  </div>
-                                  
-                                  {/* Notes Section */}
-                                  <div className="mb-3">
-                                    <button 
-                                      onClick={() => toggleShowNotes(index)}
-                                      className="flex items-center px-3 py-1.5 text-xs text-gray-600 border border-dashed border-gray-300 rounded-md hover:bg-gray-50 mb-2"
-                                    >
-                                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        {showingNotesForIndex.includes(index) ? (
-                                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                        ) : (
-                                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                        )}
-                                      </svg>
-                                      {point.notes ? 'View Notes' : 'Add Notes'}
-                                    </button>
-                                    
-                                    {showingNotesForIndex.includes(index) && (
-                                      <div className="bg-yellow-50 p-3 rounded-md border border-yellow-200">
-                                        <div className="flex justify-between items-center mb-2">
-                                          <h4 className="font-medium text-gray-700">Notes:</h4>
-                                          {point.notes && editingNoteForIndex !== index && (
-                                            <button
-                                              onClick={() => startEditingNotes(index, point.notes || '')}
-                                              className="p-1 text-gray-500 hover:text-indigo-600 hover:bg-indigo-100 rounded"
-                                              title="Edit notes"
-                                            >
-                                              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                              </svg>
-                                            </button>
-                                          )}
-                                        </div>
-                                        
-                                        {editingNoteForIndex === index ? (
-                                          <div>
-                                            <textarea
-                                              value={noteText}
-                                              onChange={(e) => setNoteText(e.target.value)}
-                                              rows={4}
-                                              className="w-full p-2 border border-yellow-300 rounded mb-2 focus:outline-none focus:ring-2 focus:ring-yellow-500"
-                                              placeholder="Enter your notes for this point..."
-                                            />
-                                            <div className="flex justify-end space-x-2">
-                                              <button
-                                                onClick={cancelEditingNotes}
-                                                disabled={isSavingNote}
-                                                className="px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
-                                              >
-                                                Cancel
-                                              </button>
-                                              <button
-                                                onClick={() => saveNotes(index)}
-                                                disabled={isSavingNote}
-                                                className="px-2 py-1 text-xs bg-amber-600 text-white rounded hover:bg-amber-700"
-                                              >
-                                                {isSavingNote ? 'Saving...' : 'Save'}
-                                              </button>
-                                            </div>
-                                          </div>
-                                        ) : (
-                                          <div>
-                                            {point.notes ? (
-                                              <p className="text-gray-700 whitespace-pre-wrap">{point.notes}</p>
-                                            ) : (
-                                              <div className="text-center py-2">
-                                                <button
-                                                  onClick={() => startEditingNotes(index, '')}
-                                                  className="px-3 py-1.5 text-xs text-yellow-600 border border-dashed border-yellow-300 rounded-md hover:bg-yellow-100"
-                                                >
-                                                  + Add Notes
-                                                </button>
-                                              </div>
-                                            )}
-                                          </div>
-                                        )}
-                                      </div>
-                                    )}
-                                  </div>
-                                  
-                                  {/* AI Chat Section - always show input */}
-                                  <div className="border border-purple-200 rounded-md p-3 bg-purple-50">
-                                    {/* Messages */}
-                                    {aiMessages[index] && aiMessages[index].length > 0 && (
-                                      <div className="mb-3 max-h-64 overflow-y-auto space-y-3 p-2">
-                                        {aiMessages[index].map((msg, msgIdx) => (
-                                          <div key={msgIdx}>
-                                            {/* Add a label to clearly identify messages */}
-                                            <div className={`text-xs font-semibold mb-1 ${
-                                              msg.role === 'user' ? 'text-right text-blue-600' : 'text-left text-purple-600'
-                                            }`}>
-                                              {msg.role === 'user' ? 'You:' : 'AI Assistant:'}
-                                            </div>
-                                            
-                                            <div 
-                                              className={`p-3 rounded-lg ${
-                                                msg.role === 'user' 
-                                                  ? 'bg-blue-100 text-blue-800 ml-auto max-w-[80%] border border-blue-200' 
-                                                  : 'bg-purple-50 text-gray-800 mr-auto max-w-[80%] border border-purple-200'
-                                              }`}
-                                            >
-                                              {msg.content}
-                                              {msg.role === 'assistant' && msg.audioUrl && (
-                                                <div className="mt-2">
-                                                  <audio 
-                                                    src={msg.audioUrl} 
-                                                    controls 
-                                                    className="w-full h-8"
-                                                  >
-                                                    Your browser does not support the audio element.
-                                                  </audio>
-                                                </div>
-                                              )}
-                                            </div>
-                                          </div>
-                                        ))}
-                                      </div>
-                                    )}
-                                    
-                                    {/* AI Input */}
-                                    <div className="flex items-center">
-                                      <input
-                                        type="text"
-                                        value={activeAIPointIndex === index ? aiInput : ''}
-                                        onChange={handleAiInputChange}
-                                        onClick={() => {
-                                          if (activeAIPointIndex !== index) {
-                                            setActiveAIPointIndex(index);
-                                          }
-                                        }}
-                                        placeholder="Ask the AI assistant about this point..."
-                                        className="flex-1 p-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-                                        onKeyPress={(e) => {
-                                          if (e.key === 'Enter' && activeAIPointIndex === index) {
-                                            sendMessageToAI(index, point);
-                                          }
-                                        }}
-                                      />
-                                      <button
-                                        onClick={() => sendMessageToAI(index, point)}
-                                        disabled={isAiLoading || !aiInput.trim() || activeAIPointIndex !== index}
-                                        className="bg-purple-600 text-white p-2 rounded-r-md hover:bg-purple-700 disabled:bg-purple-300"
-                                      >
-                                        {isAiLoading && activeAIPointIndex === index ? (
-                                          <div className="h-5 w-5 animate-spin rounded-full border-2 border-t-2 border-white"></div>
-                                        ) : (
-                                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                            <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
-                                          </svg>
-                                        )}
-                                      </button>
-                                    </div>
-                                    
-                                    {/* AI context hint */}
-                                    <div className="mt-2 text-xs text-gray-500 italic">
-                                      Ask a question about this pathway point, Bible verses, or related theological concepts.
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
+
+{/* Content box */}
+<div
+  className={`flex w-full lg:w-[calc(50%-4rem)] ${
+    index % 2 !== 0
+      ? 'justify-end pr-2 sm:pr-4 ml-auto lg:mr-[4rem]'
+      : 'justify-start pl-2 sm:pl-4 mr-auto lg:ml-[4rem]'
+  }`}
+>
+  <article
+    className={`relative w-full mt-3 rounded-lg border border-gray-200 p-3 shadow-sm transition hover:shadow-md focus-within:ring-2 focus-within:ring-indigo-500 ${
+      isCompleted ? 'bg-green-50 border-green-200' : 'bg-white'
+    } ${index % 2 !== 0 ? 'text-right' : 'text-left'}`}
+  >
+    {/* Header */}
+    <header className="flex flex-wrap items-center justify-between gap-2">
+      <h3 className="text-base font-semibold text-gray-800 leading-tight">{point.title}</h3>
+      <button
+        onClick={() => handleCompletePoint(index)}
+        disabled={isCompleted || updatingPointIndex === index}
+        className={`inline-flex items-center gap-1 rounded-md px-2.5 py-0.5 text-xs font-medium transition ${
+          isCompleted
+            ? 'bg-green-100 text-green-800 cursor-default'
+            : 'bg-indigo-100 text-indigo-800 hover:bg-indigo-200 disabled:opacity-50 disabled:cursor-not-allowed'
+        }`}
+        aria-label={isCompleted ? 'Point completed' : 'Mark point as completed'}
+      >
+        {updatingPointIndex === index ? 'Saving…' : isCompleted ? 'Done' : 'Complete'}
+      </button>
+    </header>
+
+    {isCompleted && (
+      <p className="mt-1 text-xs italic text-green-700">{completionDate}</p>
+    )}
+
+    <p className="mt-2 text-sm text-gray-700 leading-snug">{point.description}</p>
+
+    {/* Primary + Also Read grid */}
+    <div className="mt-3 grid gap-2 sm:grid-cols-2">
+      {/* Primary Verse */}
+      <section className="rounded bg-indigo-50 p-3 text-sm">
+        <header className="mb-1 flex items-center justify-between">
+          <span className="font-medium text-indigo-700">Primary</span>
+          {editingPrimaryVerse !== index && (
+            <button
+              onClick={() => startEditingPrimaryVerse(index, point.primaryVerse || '')}
+              className="p-1 text-gray-500 hover:text-indigo-600"
+              aria-label="Edit primary verse"
+            >
+              ✎
+            </button>
+          )}
+        </header>
+        {editingPrimaryVerse === index ? (
+          <div className="space-y-1">
+            <input
+              type="text"
+              value={newPrimaryVerseText}
+              onChange={(e) => setNewPrimaryVerseText(e.target.value)}
+              className="w-full rounded border border-indigo-300 p-1 text-xs focus:ring-indigo-500"
+              placeholder="John 3:16"
+            />
+            <div className="flex justify-end gap-1 text-xs">
+              <button onClick={cancelEditingPrimaryVerse} disabled={isSavingVerses} className="rounded bg-gray-100 px-2">Cancel</button>
+              <button onClick={() => savePrimaryVerseChanges(index)} disabled={isSavingVerses} className="rounded bg-indigo-600 px-2 text-white">Save</button>
+            </div>
+          </div>
+        ) : point.primaryVerse ? (
+          <p onClick={() => handleVerseClick(point.primaryVerse as string)} className="cursor-pointer text-indigo-600 hover:underline">
+            {point.primaryVerse}
+          </p>
+        ) : (
+          <button onClick={() => startAddingPrimaryVerse(index)} className="text-xs text-indigo-600">+ Add</button>
+        )}
+      </section>
+
+      {/* Also Read */}
+      <section className="rounded bg-blue-50 p-3 text-sm">
+        <header className="mb-1 flex items-center justify-between">
+          <span className="font-medium text-gray-700">Also read</span>
+          <button onClick={() => startAddingAdditionalVerse(index)} className="p-1 text-blue-600" aria-label="Add verse">＋</button>
+        </header>
+
+        {/* Add input */}
+        {addingAdditionalVerse === index && (
+          <div className="space-y-1">
+            <input
+              type="text"
+              value={newAdditionalVerseInput}
+              onChange={(e) => setNewAdditionalVerseInput(e.target.value)}
+              className="w-full rounded border border-blue-300 p-1 text-xs focus:ring-blue-500"
+              placeholder="Romans 8:28"
+            />
+            <div className="flex justify-end gap-1 text-xs">
+              <button onClick={cancelAddingAdditionalVerse} disabled={isSavingVerses} className="rounded bg-gray-100 px-2">Cancel</button>
+              <button onClick={saveNewAdditionalVerse} disabled={isSavingVerses || !newAdditionalVerseInput.trim()} className="rounded bg-blue-600 px-2 text-white">Add</button>
+            </div>
+          </div>
+        )}
+
+        {(point.additionalVerses?.length ?? 0) === 0 && addingAdditionalVerse !== index && (
+          <p className="text-xs italic text-gray-500">None</p>
+        )}
+
+        {point.additionalVerses?.length! > 0 && (
+          <ul className="space-y-0.5">
+            {point.additionalVerses!.map((verse: string, idx: number) => (
+              <li key={idx} className="flex items-start justify-between gap-1 text-xs">
+                {editingAdditionalVerse && editingAdditionalVerse.pointIndex === index && editingAdditionalVerse.verseIndex === idx ? (
+                  <>
+                    <input
+                      type="text"
+                      value={newAdditionalVerseText}
+                      onChange={(e) => setNewAdditionalVerseText(e.target.value)}
+                      className="w-full rounded border border-blue-300 p-1 text-xs focus:ring-blue-500"
+                    />
+                    <button onClick={cancelEditingAdditionalVerse} className="text-gray-500">✕</button>
+                    <button onClick={saveAdditionalVerseChanges} className="text-blue-600">✔</button>
+                  </>
+                ) : (
+                  <>
+                    <span onClick={() => handleVerseClick(verse)} className="cursor-pointer text-indigo-600 hover:underline flex-1 truncate">
+                      {verse}
+                    </span>
+                    <button onClick={() => startEditingAdditionalVerse(index, idx, verse)} className="text-gray-500">✎</button>
+                    <button onClick={() => deleteAdditionalVerse(index, idx)} className="text-red-500">🗑</button>
+                  </>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+    </div>
+
+    {/* Notes toggle */}
+    <div className="mt-3 text-xs">
+      <button onClick={() => toggleShowNotes(index)} className="inline-flex items-center gap-1 rounded border border-dashed border-gray-300 px-2 py-0.5 text-gray-600 hover:bg-gray-50">
+        {showingNotesForIndex.includes(index) ? '▾ Notes' : '▸ Notes'}
+      </button>
+      {showingNotesForIndex.includes(index) && (
+        <div className="mt-1 rounded border border-yellow-200 bg-yellow-50 p-2">
+          {editingNoteForIndex === index ? (
+            <>
+              <textarea
+                value={noteText}
+                onChange={(e) => setNoteText(e.target.value)}
+                rows={3}
+                className="w-full rounded border border-yellow-300 p-1 text-xs focus:ring-yellow-500"
+              />
+              <div className="mt-1 flex justify-end gap-1">
+                <button onClick={cancelEditingNotes} disabled={isSavingNote} className="rounded bg-gray-100 px-2 text-xs">Cancel</button>
+                <button onClick={() => saveNotes(index)} disabled={isSavingNote} className="rounded bg-amber-600 px-2 text-xs text-white">Save</button>
+              </div>
+            </>
+          ) : point.notes ? (
+            <p className="whitespace-pre-wrap text-gray-700">{point.notes}</p>
+          ) : (
+            <button onClick={() => startEditingNotes(index, '')} className="text-yellow-600 underline">Add note</button>
+          )}
+        </div>
+      )}
+    </div>
+
+    {/* AI Chat */}
+    <section className="mt-3 rounded border border-purple-200 bg-purple-50 p-2 text-xs">
+      {aiMessages[index]?.length > 0 && (
+        <div className="mb-2 max-h-52 space-y-2 overflow-y-auto">
+          {aiMessages[index].map((msg, msgIdx) => (
+            <div key={msgIdx} className="space-y-0.5">
+              <p className={`font-semibold ${msg.role === 'user' ? 'text-right text-blue-600' : 'text-left text-purple-600'}`}>{msg.role === 'user' ? 'You:' : 'AI:'}</p>
+              <div className={`rounded border p-2 ${msg.role === 'user' ? 'border-blue-200 bg-blue-100 text-blue-800' : 'border-purple-200 bg-purple-50 text-gray-800'}`}>{msg.content}</div>
+            </div>
+          ))}
+        </div>
+      )}
+      <div className="flex items-center gap-0.5">
+        <input
+          type="text"
+          value={activeAIPointIndex === index ? aiInput : ''}
+          onChange={handleAiInputChange}
+          onClick={() => activeAIPointIndex !== index && setActiveAIPointIndex(index)}
+          placeholder="Ask…"
+          className="flex-1 rounded-l border border-gray-300 p-1 focus:ring-purple-500"
+          onKeyPress={(e) => e.key === 'Enter' && activeAIPointIndex === index && sendMessageToAI(index, point)}
+        />
+        <button
+          onClick={() => sendMessageToAI(index, point)}
+          disabled={isAiLoading || !aiInput.trim() || activeAIPointIndex !== index}
+          className="rounded-r bg-purple-600 px-2 py-1 text-white hover:bg-purple-700 disabled:bg-purple-300"
+          aria-label="Send"
+        >
+          {isAiLoading && activeAIPointIndex === index ? '⏳' : '➤'}
+        </button>
+      </div>
+    </section>
+  </article>
+</div>
+
                           </div>
                         );
                       })}
